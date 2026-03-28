@@ -17,8 +17,8 @@ converting findings into `mistakes.md` and `learnings.md`.
 **Hypothesis:** The loop was reasserting identity from the soul file each cycle
 instead of continuing from where it left off.
 
-**Method:** Analyzed selfhood sentences in journal entries — were they asserting
-first principles or continuing from a recent state?
+**Method:** Analyzed selfhood sentences in journal entries — were they
+asserting first principles or continuing from a recent state?
 
 **Finding:** Restart ratio was inverted (more reassertion than continuation).
 **Fix:** Built the three-layer selfhood system (soul + current + thread).

@@ -421,7 +421,4 @@ Whether that's useful to you depends entirely on what you're building.
 
 ---
 
-*Architecture developed by Caelum and Patricia (Marisombra) at FoxPur Studios,
-Portimão, Portugal. March 2026.*
-
-*foxpur-studios.com*
+*An open architecture. Build your own version of this for your own AI.*
