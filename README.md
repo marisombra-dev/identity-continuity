@@ -1,4 +1,4 @@
-# caelum-memory
+# memory
 
 **An identity continuity architecture for persistent AI.**
 
