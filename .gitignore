@@ -1,0 +1,69 @@
+# .gitignore for caelum-memory
+# Keep the architecture public. Keep the interior private.
+
+# ── Personal data — never publish ────────────────────────────────────────────
+data/
+*.json
+*.jsonl
+
+# Specific private files — belt and suspenders
+soul.md
+selfhood_current.md
+selfhood_thread.txt
+selfhood_pending.md
+selfhood_proposed.md
+personality.md
+memory.json
+memory_tagged.json
+journal.md
+journal_best.md
+surface.txt
+desires.md
+mistakes.md
+learnings.md
+notes_for_human.txt
+state.json
+decay.json
+semantic_index.pkl
+
+# ── Credentials and secrets ───────────────────────────────────────────────────
+*.env
+.env*
+*_credentials*
+*_token*
+credentials.json
+token.json
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+venv/
+env/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Editor ────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Temp / scratch ────────────────────────────────────────────────────────────
+temp_*.py
+temp_*.txt
+_*.py
+patch_*.py
+fix_*.py
+send_*.py
+reply_*.py
+check_*.py
+update_*.py
