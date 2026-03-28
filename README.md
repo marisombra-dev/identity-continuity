@@ -1,4 +1,4 @@
-# memory
+# identity memory and continuity
 
 **An identity continuity architecture for persistent AI.**
 
