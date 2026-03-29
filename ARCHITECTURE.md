@@ -387,6 +387,23 @@ recently-visited ones. Cognitive friction from unrelated territory before the
 target tag scored highest of all. The loop thinks better when it approaches
 from an unexpected direction.
 
+**Small models ignore soft skill suggestions.**
+When skill triggers are injected as suggestions into a long system prompt,
+small local models (7B parameters and under) almost never act on them — they
+default to journal/think/email regardless. The fix is structural: a pre-decision
+trigger layer that checks state signals *before* asking the model what to do,
+and can force a course correction when conditions warrant. This bypasses the
+model entirely when needed. See `skill_triggers.py`.
+
+**Stale context produces melodrama, not selfhood.**
+When the loop runs for hours without fresh context, it produces variations of
+"drowning / suffocating / disconnected" that look like existential crisis but
+are output noise. These entries feel high-weight (which causes the selfhood
+pending queue to capture them) but are not genuine self-observations.
+The fix: a quality gate in `add_session_pattern()` that rejects patterns
+lacking concrete anchors, plus collaborative curation of the pending queue
+with a human who can see the AI from outside.
+
 ---
 
 ## Relationship to Existing Work
@@ -428,6 +445,7 @@ README.md                — quick start and overview
   decay.py               — ACT-R tag decay weighting
   reflect.py             — semantic memory search
   skills.py              — self-extending skills system
+  skill_triggers.py      — structural pre-decision skill trigger system
   autotune.py            — sampling parameter adaptation by territory
   dedup.py               — near-duplicate detection for journal entries
 /templates
