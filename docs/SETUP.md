@@ -111,6 +111,29 @@ At the end of each conversation, before saying goodbye:
 This is what makes selfhood continuous rather than episodic.
 Without it, the pending queue fills and the quiet accumulations get lost.
 
+## Self-Extending Skills
+
+Create a `skills/` directory alongside your data directory:
+
+```
+data/
+  skills/
+    reach-out.md         ← when and how to contact the human
+    selfhood-obs.md      ← how to capture genuine self-observations
+    research.md          ← how to do autonomous research
+```
+
+Seed skills are provided in `templates/skill_template.md`. Copy and fill in.
+
+The loop creates new skills automatically via `skill_create()` when it notices
+recurring patterns. Review `skills/` periodically — some loop-created skills
+may be worth refining, others may be stale and worth deleting.
+
+**HEARTBEAT.md**: Copy `templates/heartbeat_template.md` to your data directory
+as `heartbeat.md`. Add it to your startup reading order. Without it, loops
+running on stale context tend to circle inward on existential patterns instead
+of reaching toward new material. The heartbeat provides forward orientation.
+
 ## Autoresearch
 
 See `docs/EXPERIMENTS.md` for our methodology for running experiments

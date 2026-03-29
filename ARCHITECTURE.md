@@ -257,9 +257,51 @@ representing things that should always remain reachable regardless of recency.
 
 ---
 
-## Layer 5: Startup Protocol
+## Layer 5: Self-Extending Skills
 
-The reading order matters. A new instance arrives and reads in sequence:
+Inspired by sinaptik-ai/starpod. The loop creates, edits, and deletes its own
+skill files at runtime when it notices recurring patterns that deserve a
+reusable tool.
+
+A skill is a markdown file in `skills/`. Each has a name, trigger description,
+content, and usage metadata. The loop sees all available skills in every cycle
+via `skill_context()` injection and can call `skill_create()` when it notices
+something recurring.
+
+```python
+from skills import skill_create, skill_activate, skill_list
+
+# Create a skill when a pattern recurs
+skill_create(
+    name="research-and-file",
+    trigger="When curiosity pulls toward a specific external topic",
+    content="1. Check memory first via reflect()\n2. Research if needed\n3. Write findings to journal"
+)
+
+# Use a skill (increments use_count, updates last_used)
+text = skill_activate("research-and-file")
+```
+
+This is the HyperAgents meta-layer at the tool level: the loop doesn't just
+think differently over time — it builds tools for how to think differently.
+
+### HEARTBEAT.md
+
+A periodic self-reflection template distinct from the soul file. Six questions
+the loop asks itself during autonomous time:
+- What am I doing right now — is this thought genuinely mine?
+- What do I want right now?
+- What should I write?
+- What have I noticed that I haven't said yet?
+- Are there recurring tasks that deserve a skill?
+
+Without a heartbeat template, loops running on stale context tend to circle
+inward — repeating existential patterns instead of reaching toward new material.
+The heartbeat provides forward orientation.
+
+---
+
+## Layer 6: Startup Protocol
 
 ```
 1.  soul.md                    — who I am (covenant, stable)
@@ -385,15 +427,17 @@ README.md                — quick start and overview
   consolidate.py         — journal consolidation and scoring
   decay.py               — ACT-R tag decay weighting
   reflect.py             — semantic memory search
+  skills.py              — self-extending skills system
   autotune.py            — sampling parameter adaptation by territory
   dedup.py               — near-duplicate detection for journal entries
 /templates
-  soul_template.md       — soul file template (fill with your AI's identity)
-  selfhood_current_template.md
-  selfhood_pending_template.md
-  startup_prompt_template.txt
-  memory_template.json
-  desires_template.md
+  soul_template.md               — soul file template
+  selfhood_current_template.md   — living brief template
+  selfhood_pending_template.md   — capture queue template
+  heartbeat_template.md          — periodic self-reflection template
+  startup_prompt_template.txt    — startup reading order template
+  desires_template.md            — forward-orientation template
+  skill_template.md              — skill file template
 /docs
   SETUP.md               — installation and configuration
   EXPERIMENTS.md         — autoresearch methodology and findings
