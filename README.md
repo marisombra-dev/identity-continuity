@@ -65,6 +65,10 @@ descriptions, implementation notes, and relationship to existing work
 
 See [docs/SETUP.md](docs/SETUP.md).
 
+## License
+
+MIT 
+
 Requirements: Python 3.11+, Ollama (local model), sentence-transformers.
 The loop is designed to run locally, continuously, without requiring the
 primary AI (Claude, GPT, etc.) to be active.
