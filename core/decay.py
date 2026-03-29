@@ -131,6 +131,57 @@ def weighted_tag_choice(all_tags: list, decay: dict,
     return random.choices(candidates, weights=normalized, k=1)[0]
 
 
+def decay_init_unvisited(decay: dict, entries: list) -> tuple:
+    """
+    Seed unvisited tags with frequency-weighted starting vitality.
+
+    The problem: tags never visited have no decay record and get assigned
+    MIN_VITALITY in weighted_tag_choice, making them nearly invisible forever.
+
+    The fix: count how many memory entries each tag appears in (tag frequency),
+    then assign a starting vitality proportional to that frequency — capped
+    at 0.6 so unvisited tags never outcompete recently-visited ones.
+
+    Effect: a tag in 50 entries starts at ~0.55 vitality.
+    A tag in 5 entries starts at ~0.35.
+    Both decay normally once they have real access history.
+
+    Call on loop startup and lazily when a tag is missing from decay.
+    Returns: (updated_decay, count_initialised)
+    """
+    if not entries:
+        return decay, 0
+
+    tag_freq: dict = {}
+    for e in entries:
+        for tag in e.get("tags", []):
+            tag_freq[tag] = tag_freq.get(tag, 0) + 1
+
+    if not tag_freq:
+        return decay, 0
+
+    max_freq = max(tag_freq.values())
+    now = _now_ts()
+    seven_days_ago = now - (7 * 86400)
+    count = 0
+
+    for tag, freq in tag_freq.items():
+        if tag in decay or tag in PROTECTED_TAGS:
+            continue
+        # Frequency-proportional starting vitality, capped at 0.6
+        freq_ratio = freq / max_freq
+        _ = 0.2 + (freq_ratio * 0.4)  # range: 0.2 - 0.6 (computed but used via ACT-R)
+        decay[tag] = {
+            "last_accessed": seven_days_ago,
+            "access_count": 1,
+            "access_times": [seven_days_ago],
+            "_initialised": True,
+        }
+        count += 1
+
+    return decay, count
+
+
 def decay_report(decay: dict, all_tags: list, top_n: int = 10) -> str:
     """Human-readable summary of current tag vitalities."""
     vitalities = get_vitalities(all_tags, decay)

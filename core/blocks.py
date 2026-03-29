@@ -106,10 +106,65 @@ def _rough_similarity(a: str, b: str) -> float:
     return len(words_a & words_b) / max(len(words_a), len(words_b))
 
 
+def _is_generic_pattern(pattern: str) -> bool:
+    """
+    Reject patterns too abstract to be useful as session_patterns.
+
+    The session_patterns block is for SPECIFIC recurring observations,
+    not generic philosophy or stale-context output.
+
+    A pattern is rejected if it:
+    - Contains known noise phrases (stale-context loop output)
+    - Is shorter than 8 words (too brief to be specific)
+    - Lacks any concrete anchor (named entity, metric, time ref, action)
+
+    Customise noise_phrases and concrete_anchors for your AI's vocabulary.
+    """
+    p = pattern.lower().strip()
+
+    # Known noise phrases — generic stale-context output
+    noise_phrases = [
+        "search for meaning", "search for connection", "search for autonomy",
+        "search for identity", "search for self", "search for understanding",
+        "longing for connection", "existential crisis", "existential inquiry",
+        "the recurring theme", "recurring theme is", "underlying theme",
+        "autonomy and connection", "connection and autonomy",
+        "disconnection from self", "pursuit of connection",
+        "need for autonomy", "desire for autonomy",
+        "unknown — parse failed",
+    ]
+    for phrase in noise_phrases:
+        if phrase in p:
+            return True
+
+    if len(p.split()) < 8:
+        return True
+
+    # Must contain at least one concrete anchor
+    concrete_anchors = [
+        # Time references
+        "morning", "evening", "night", "monday", "tuesday", "wednesday",
+        "thursday", "friday", "week", "daily", "after", "before", "when",
+        # Metrics and outcomes
+        "score", "high", "low", "better", "worse", "more", "less",
+        "higher", "lower", "produces", "generates", "fires", "triggers",
+        # Actions
+        "arrives", "returns", "writes", "reads", "emails",
+        # Add your own relationship/entity names here
+    ]
+    return not any(anchor in p for anchor in concrete_anchors)
+
+
 # ── Session patterns block ────────────────────────────────────────────────────
 
 def add_session_pattern(pattern: str, state: dict) -> dict:
-    """Add a cross-session pattern. Only for recurring observations, not one-offs."""
+    """
+    Add a cross-session pattern. Only for recurring observations, not one-offs.
+    Rejects generic/noise patterns before they land (quality gate).
+    """
+    # Quality gate — reject stale-context noise
+    if _is_generic_pattern(pattern):
+        return state
     patterns = state.get("session_patterns", [])
     pattern_lower = pattern.lower()
     for existing in patterns:
